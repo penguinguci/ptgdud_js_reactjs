@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .team-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .score-input {
+            margin: 10px 0;
+        }
+        .score-input label {
+            display: inline-block;
+            width: 100px;
+        }
+        .score-input input {
+            padding: 5px;
+            width: 80px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+        }
+        .preset-data {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9e9e9;
+            border-radius: 5px;
+        }
+        .preset-data button {
+            margin: 5px;
+            background-color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cuộc Thi Dolphins vs. Koalas</h1>
+    
+    <div class="team-section">
+        <h2>Dolphins</h2>
+        <div class="score-input">
+            <label>Điểm lần 1:</label>
+            <input type="text" id="dolphins1">
+        </div>
+        <div class="score-input">
+            <label>Điểm lần 2:</label>
+            <input type="text" id="dolphins2">
+        </div>
+        <div class="score-input">
+            <label>Điểm lần 3:</label>
+            <input type="text" id="dolphins3">
+        </div>
+    </div>
+
+    <div class="team-section">
+        <h2>Koalas</h2>
+        <div class="score-input">
+            <label>Điểm lần 1:</label>
+            <input type="text" id="koalas1">
+        </div>
+        <div class="score-input">
+            <label>Điểm lần 2:</label>
+            <input type="text" id="koalas2">
+        </div>
+        <div class="score-input">
+            <label>Điểm lần 3:</label>
+            <input type="text" id="koalas3">
+        </div>
+    </div>
+
+    <button id="btnCal">Tính Điểm</button>
+    <div id="result"></div>
+
+    <div class="preset-data">
+        <h3>Dữ liệu mẫu:</h3>
+        <button id="data1">Dữ liệu 1</button>
+        <button id="bonus1">Dữ liệu thưởng 1</button>
+        <button id="bonus2">Dữ liệu thưởng 2</button>
+    </div>
+
+    <script>
+        var resultDiv = document.getElementById("result")
+
+        document.getElementById("btnCal").addEventListener('click', () => {
+            var dolphins1 = parseInt(document.getElementById("dolphins1").value)
+            var dolphins2 = parseInt(document.getElementById("dolphins2").value)
+            var dolphins3 = parseInt(document.getElementById("dolphins2").value)
+
+            var koalas1  = parseInt(document.getElementById("koalas1").value)
+            var koalas2  = parseInt(document.getElementById("koalas2").value)
+            var koalas3  = parseInt(document.getElementById("koalas3").value)
+
+            // avg
+            var avgDolphins = (dolphins1 + dolphins2 + dolphins3)/3
+            var avgKoalas = (koalas1 + koalas2 + koalas3)/3
+
+            let result = ''
+            result += `Điểm trung bình Dolphins: ${avgDolphins.toFixed(2)}<br>`
+            result += `Điểm trung bình Koalas: ${avgKoalas.toFixed(2)}<br><br>`
+
+            if (avgDolphins >= 100 && avgKoalas >= 100) {
+                if (avgDolphins > avgKoalas) {
+                    result += 'Dophins thắng!'
+                } else if (avgKoalas > avgDolphins) {
+                    result += 'Koalas thắng!'
+                } else {
+                    result += 'Hai đội hòa và cùng giành cúp!'
+                }
+            } else if (avgDolphins >= 100) {
+                result += 'Dolphins thắng!'
+            } else if (avgKoalas >= 100) {
+                result += 'Dolphins thắng!'
+            } else {
+                result += 'Không đội nào đạt điểm tối thiểu 100, không có đội nào giành cúp!'
+            }
+
+            resultDiv.innerHTML = result
+        });
+
+        document.getElementById('data1').addEventListener('click', () => {
+            document.getElementById('dolphins1').value = 96
+            document.getElementById('dolphins2').value = 108
+            document.getElementById('dolphins3').value = 89
+            document.getElementById('koalas1').value = 88
+            document.getElementById('koalas2').value = 91
+            document.getElementById('koalas3').value = 110
+        })
+
+        document.getElementById('bonus1').addEventListener('click', () => {
+            document.getElementById('dolphins1').value = 97
+            document.getElementById('dolphins2').value = 112
+            document.getElementById('dolphins3').value = 101
+            document.getElementById('koalas1').value = 109
+            document.getElementById('koalas2').value = 95
+            document.getElementById('koalas3').value = 123
+        })
+
+        document.getElementById('bonus2').addEventListener('click', () => {
+            document.getElementById('dolphins1').value = 97
+            document.getElementById('dolphins2').value = 112
+            document.getElementById('dolphins3').value = 101
+            document.getElementById('koalas1').value = 109
+            document.getElementById('koalas2').value = 95
+            document.getElementById('koalas3').value = 106
+        })
+    </script>
+</body>
+</html>

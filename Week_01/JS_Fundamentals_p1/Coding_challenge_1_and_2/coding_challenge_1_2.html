@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            padding: 8px;
+            width: 200px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <h1>BMI Caculator</h1>
+    <div class="form-group">
+        <label>Cân nặng của Mark (kg):</label>
+        <input type="text" id="mass_mark">
+    </div>
+    <div class="form-group">
+        <label>Chiều cao của Mark (m):</label>
+        <input type="text" id="height_mark">
+    </div>
+    <div class="form-group">
+        <label>Cân nặng của John (kg):</label>
+        <input type="text" id="mass_john">
+    </div>
+    <div class="form-group">
+        <label>Chiều cao của John (m):</label>
+        <input type="text" id="height_john">
+    </div>
+    <button id="btnCal">Caculator BMI</button>
+    <div id="result"></div>
+    <script>
+        var btnCalculator = document.getElementById("btnCal")
+        var resultDiv = document.getElementById("result")
+        
+        btnCalculator.addEventListener('click', () => {
+            var mass_mark = parseFloat(document.getElementById("mass_mark").value)
+            var height_mark = parseFloat(document.getElementById("height_mark").value)
+            var mass_john = parseFloat(document.getElementById("mass_john").value)
+            var height_john = parseFloat(document.getElementById("height_john").value)
+
+            var bmi_mark = mass_mark/height_mark**2
+            var bmi_john = mass_john/height_john**2
+
+            var markHigherBMI = bmi_mark > bmi_john
+            
+
+            if (markHigherBMI) {
+                resultDiv.innerHTML = `
+                    <p><strong>Mark's BMI is higher than John's!</strong></p>
+                    <p><strong>Mark's BMI (${bmi_mark.toFixed(2)}) is higher than John's (${bmi_john.toFixed(2)})!</strong></p>
+                `
+            } else {
+                resultDiv.innerHTML = `
+                    <p><strong>John's BMI is higher than Mark's!</strong></p>
+                    <p><strong>John's BMI (${bmi_john.toFixed(2)}) is higher than Mark's (${bmi_mark.toFixed(2)})!</strong></p>
+                `
+            }
+        })
+    </script>
+</body>
+</html>
