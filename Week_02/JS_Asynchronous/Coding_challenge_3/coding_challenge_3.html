@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .images img {
+            max-width: 100%;
+            height: auto;
+            transition: opacity 0.5s ease;
+        }
+        .parallel {
+            border: 2px solid red;
+            margin: 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="images"></div>
+    <script>
+        // p1
+        const createImage = function (imgPath) {
+            return new Promise((resolve, reject) => {
+                const img = document.createElement('img')
+                img.src = imgPath
+                
+                // khi hinh anh tai xong
+                img.onload = function () {
+                    document.querySelector('.images').appendChild(img)
+                    resolve(img)
+                }
+
+                // neu co loi khi tai hinh anh
+                img.onerror = function () {
+                    reject('Không thể tải hình ảnh');
+                }
+            })
+        }
+
+        const wait = function (seconds) {
+            return new Promise(resolve => {
+                setTimeout(resolve, seconds * 1000)
+            })
+        }
+
+        //  hàm bất đồng bộ `loadNPause`
+        const loadPause = async function () {
+            try {
+                // tai hinh anh 1
+                let img = await createImage('image1.png')
+                console.log('Hình ảnh 1 đã tải')
+                await wait(2)
+
+                // an hinh anh 1
+                img.style.display = 'none'
+
+                img = await createImage('image2.png')
+                console.log('Hình ảnh 2 đã tải')
+                await wait(2)
+
+                // an hinh anh 2
+                img.style.display = 'none'
+
+                img = await createImage('image3.png')
+                console.log('Hình ảnh 3 đã tải')
+                await wait(2)
+
+                // an hinh anh 3
+                img.style.display = 'none'
+
+                img = await createImage('image4.png')
+                console.log('Hình ảnh 4 đã tải')
+                await wait(2)
+
+                // an hinh anh 4
+                img.style.display = 'none'
+
+                img = await createImage('image5.png')
+                console.log('Hình ảnh 5 đã tải')
+                await wait(2)
+
+                // an hinh anh 5
+                img.style.display = 'none'
+            } catch (err) {
+                console.log(err.message)
+            }
+        }
+
+        // p2
+        const loadAll = async function (imgArr) {
+            try {
+                // tai all hinh anh bang .map
+                const imgs = await Promise.all(
+                    imgArr.map(async imgPath => {
+                        const img = await createImage(imgPath)
+                        console.log(`Hình ảnh đã tải: ${imgPath}`)
+                        return img
+                    })
+                )
+
+                imgs.forEach(img => img.classlist.add('parallel'))
+                console.log('Tất cả hình ảnh đã được tải:', imgs);
+            } catch (err) {
+                console.log(err.message)
+            }
+        }
+
+        const imgPaths = ['image1.png', 'image2.png', 'image3.png', 'image4.png', 'image5.png']
+
+        loadPause()
+        loadAll(imgPaths)
+    </script>
+</body>
+</html>
