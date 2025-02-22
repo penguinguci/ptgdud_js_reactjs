@@ -7,8 +7,8 @@ function App() {
 
   return (
     <>
-      <h2>Trần Long Vũ - 22717471 - DHKTPM18B</h2>
-      <h2>Bài tập thực hành React tuần 02</h2>
+      {/* <h2>Trần Long Vũ - 22717471 - DHKTPM18B</h2>
+      <h2>Bài tập thực hành React tuần 02</h2> */}
       <h3>Exercise 01</h3>
       <AppEx1 />
       <h3>Exercise 02</h3>
