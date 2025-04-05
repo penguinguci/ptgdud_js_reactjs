@@ -7,7 +7,7 @@ const MainLayout = ({children}) => {
         <div className="col-span-1 w-2/3">
           <Sidebar />
         </div>
-        <div className="col-span-3 w-full">
+        <div className="col-span-3 w-full ">
           <TopNavigation />
           <div className="content">{children}</div>
         </div>

@@ -1,15 +1,20 @@
 import logo from '/logo.png'
+import avatar from '/avatar.png'
 import { Link } from 'react-router-dom';
 import {
   MdOutlineDashboardCustomize,
   MdCode,
   MdOutlineMessage,
+  MdLogout,
 } from "react-icons/md";
 import { GoProjectSymlink } from "react-icons/go";
 import { RiTeamLine } from "react-icons/ri";
 import { GrAnalytics } from "react-icons/gr";
+import { useState } from 'react';
 
 const Sidebar = () => {
+
+    const [isActive, setIsActive] = useState(null); 
 
     const menuItems = [
       {
@@ -41,39 +46,49 @@ const Sidebar = () => {
     ];
 
     return (
-      <div className="sidebar h-screen bg-violet-400">
+      <div className="sidebar h-screen bg-violet-400 flex flex-col justify-between">
         <Link className="logo flex items-center gap-2 p-2" to="/dashboard">
           <img src={logo} alt="logo" />
           <h1 className="title text-lg text-white font-bold">Admin Funny</h1>
         </Link>
-        <div className="menu">
-          <ul className="flex flex-col py-2">
+        <div className="menu flex-grow py-4">
+          <ul className="flex flex-col">
             {menuItems.map((item, index) => (
               <Link
                 key={index}
                 to={item.path}
-                className="flex items-center text-white text-lg my-1"    
+                className="flex items-center text-white text-lg my-1"
               >
-                <button className="flex items-center h-10 w-full mx-2 px-4 gap-4 bg-violet-400 hover:bg-violet-600 cursor-pointer rounded-md">
+                <button
+                  onClick={() => setIsActive(index)}
+                  className={`flex items-center h-10 w-full mx-2 px-4 gap-4  hover:bg-violet-600 cursor-pointer rounded-md ${
+                    isActive === index ? "bg-violet-600" : "bg-violet-400"
+                  }`}
+                >
                   <span>{item.icon}</span>
-                  <span className='text-lg'>{item.name}</span>
+                  <span style={{ fontSize: "16px" }}>{item.name}</span>
                 </button>
               </Link>
             ))}
           </ul>
         </div>
-        <div className="bottom">
-            <div className="user">
-                <div className="user-image">
-                    <img src="" alt="" />
-                </div>
-                <div className="user-name">
-                    
-                </div>
+        <div className="bottom flex flex-col py-2 px-2 gap-1">
+          <div className="user flex items-center mx-3 gap-4 justify-start">
+            <div className="user-image">
+              <img src={avatar} alt="avatar" className="w-10" />
             </div>
-            <button>
-                Logout
-            </button>
+            <div className="user-name">
+              <h1 className="text-white text-lg">User Name</h1>
+              <p className="text-gray-200 text-sm">Admin</p>
+            </div>
+          </div>
+          <button
+            className="flex items-center justify-center text-white text-lg my-1 h-10 gap-2 hover:bg-violet-600 cursor-pointer rounded-md"
+            style={{ fontSize: "16px" }}
+          >
+            <MdLogout size={25} />
+            Logout
+          </button>
         </div>
       </div>
     );
