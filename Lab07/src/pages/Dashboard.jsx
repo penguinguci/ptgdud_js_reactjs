@@ -75,7 +75,9 @@ const Dashboard = () => {
               </button>
             </div>
           </div>
-         
+          <div className="table-user mt-2">
+            <UserTable users={users}/>
+          </div>
         </div>
       </div>
     );
