@@ -26,3 +26,51 @@ export const getAdminByRole = async (req, res) => {
         res.status(500).json({message: err.message})
     }
 };
+
+// thêm user
+export const addUser = async (req, res) => {
+    try {
+        console.log("Received body: ", req.body);
+
+         if (!req.body.fullName || !req.body.phone || !req.body.email) {
+            return res.status(400).json({ message: "Missing required fields" });
+        }
+        
+        const existingUser = await User.findOne({
+            $or: [
+                {email: req.body.email},
+                {phone: req.body.phone}
+            ]
+        });
+
+        if (existingUser) {
+            return res.status(400).json({
+                message: existingUser.email === req.body.email
+                    ? "Email already exists"
+                    : "Phone number already exists"
+            });
+        }
+
+        const user = new User({
+            fullName: req.body.fullName,
+            phone: req.body.phone,
+            email: req.body.email.toLowerCase(),
+            birthDate: req.body.birthDate || null,
+            gender: req.body.gender,
+            address: req.body.address || "",
+            avatar: req.body.avatar || "",
+            role: "user",
+            status: "Active",
+            password: req.body.password || "tranvu23405"
+        });
+
+        const newUser = await user.save();
+        console.log("User created successfully:", newUser);
+        res.status(201).json(newUser);
+    } catch (err) {
+        res.status(400).json({
+            message: err.message,
+            errors: err.errors ? Object.values(err.errors).map(e => e.message) : null
+        });
+    }
+};

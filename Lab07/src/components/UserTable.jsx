@@ -4,10 +4,37 @@ import DataTable from "react-data-table-component";
 import {FaEye, FaEdit, FaTrash} from "react-icons/fa"
 
 const UserTable = ({users}) => {
+  
   // chuyển dạng base64 sang ảnh
   const convertBase64ToImage = (base64String) => {
-    return `data:image/jpeg;base64,${base64String}`;
+    if (!base64String) return "";
+
+    // nếu đã là dạng "data:image/..." thì trả lại luôn
+    if (base64String.startsWith("data:image")) {
+      return base64String;
+    }
+
+    // dò định dạng dựa trên magic number
+    const header = base64String.substring(0, 10);
+    let mimeType = "image/jpeg"; // mặc định fallback
+
+    if (header.startsWith("/9j/")) {
+      mimeType = "image/jpeg";
+    } else if (header.startsWith("iVBORw0KG")) {
+      mimeType = "image/png";
+    } else if (header.startsWith("R0lGODlh") || header.startsWith("R0lGODdh")) {
+      mimeType = "image/gif";
+    } else if (header.startsWith("UklGR")) {
+      mimeType = "image/webp";
+    } else if (base64String.includes("<svg")) {
+      mimeType = "image/svg+xml";
+      // svg cần encode lại vì là text
+      return `data:${mimeType};utf8,${encodeURIComponent(atob(base64String))}`;
+    }
+
+    return `data:${mimeType};base64,${base64String}`;
   };
+
 
   const columns = [
     {
@@ -60,7 +87,7 @@ const UserTable = ({users}) => {
     {
       name: "Role",
       selector: (row) => row.role,
-      cell: row => (
+      cell: (row) => (
         <span
           className={`px-2 py-1 rounded-full text-xs ${
             row.role == "admin"
@@ -81,27 +108,24 @@ const UserTable = ({users}) => {
         <div className="flex space-x-2">
           <button
             className="text-blue-500 hover:text-blue-700 p-1 cursor-pointer"
-            title="See details"
           >
             <FaEye size={16} />
           </button>
           <button
             className="text-green-500 hover:text-green-700 p-1 cursor-pointer"
-            title="Edit"
           >
             <FaEdit size={16} />
           </button>
           <button
             className="text-red-500 hover:text-red-700 p-1 cursor-pointer"
-            title="Delete"
           >
             <FaTrash size={16} />
           </button>
         </div>
       ),
-      ignoreRowClick: true,
-      allowOverflow: true,
-      button: true,
+      // ignoreRowClick: true,
+      // allowOverflow: true,
+      // button: true,
       width: "120px",
     },
   ];
