@@ -1,5 +1,4 @@
 import logo from '/logo.png'
-import avatar from '/avatar.png'
 import { Link } from 'react-router-dom';
 import {
   MdOutlineDashboardCustomize,
@@ -11,8 +10,9 @@ import { GoProjectSymlink } from "react-icons/go";
 import { RiTeamLine } from "react-icons/ri";
 import { GrAnalytics } from "react-icons/gr";
 import { useState } from 'react';
+import avatar from "/avatar.png";
 
-const Sidebar = () => {
+const Sidebar = ({admin}) => {
 
     const [isActive, setIsActive] = useState(null); 
 
@@ -45,6 +45,11 @@ const Sidebar = () => {
       },
     ];
 
+    // chuyển dạng base64 sang ảnh
+    const convertBase64ToImage = (base64String) => {
+      return `data:image/jpeg;base64,${base64String}`;
+    }
+
     return (
       <div className="sidebar h-screen bg-violet-400 flex flex-col justify-between">
         <Link className="logo flex items-center gap-2 p-2" to="/dashboard">
@@ -57,7 +62,7 @@ const Sidebar = () => {
               <Link
                 key={index}
                 to={item.path}
-                className="flex items-center text-white text-lg my-1"
+                className="flex items-center text-white text-lg my-2"
               >
                 <button
                   onClick={() => setIsActive(index)}
@@ -75,10 +80,18 @@ const Sidebar = () => {
         <div className="bottom flex flex-col py-2 px-2 gap-1">
           <div className="user flex items-center mx-3 gap-4 justify-start">
             <div className="user-image">
-              <img src={avatar} alt="avatar" className="w-10" />
+              <img
+                src={
+                  admin?.avatar ? convertBase64ToImage(admin.avatar) : avatar
+                }
+                alt="avatar"
+                className="w-10 rounded-full"
+              />
             </div>
             <div className="user-name">
-              <h1 className="text-white text-lg">User Name</h1>
+              <h1 className="text-white text-lg">
+                {admin?.fullName || "Guest"}
+              </h1>
               <p className="text-gray-200 text-sm">Admin</p>
             </div>
           </div>

@@ -20,7 +20,7 @@ function App() {
             <Route path="/teams" element={<Team />} />
             <Route path="/analytics" element={<Analytic />} />
             <Route path="/messages" element={<Message />} />
-            <Route path="/integrations" element={<Integration />} />''
+            <Route path="/integrations" element={<Integration />} />
           </Routes>
         </MainLayout>
       </BrowserRouter>
