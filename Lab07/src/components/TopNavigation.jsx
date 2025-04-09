@@ -3,52 +3,52 @@ import { BiSearchAlt2 } from "react-icons/bi";
 import avatar from "/avatar.png";
 
 const TopNavigation = ({ admin }) => {
-  // chuyển dạng base64 sang ảnh
-  const convertBase64ToImage = (base64String) => {
-    return `data:image/jpeg;base64,${base64String}`;
-  };
-
   return (
-    <div className="py-2 flex items-center gap-4 shadow-md justify-end mx-4">
-      <div className="left search flex  items-center">
-        <span className="border w-12 h-10 border-violet-300 rounded-l-xl flex items-center justify-center ">
-          <BiSearchAlt2 size={20} className="text-violet-600" />
-        </span>
-        <input
-          type="text"
-          placeholder="Search..."
-          className="border border-violet-300 rounded-r-lg w-120 h-10 px-2 focus:outline-none"
-        />
-      </div>
-      <div className="right flex items-center gap-4">
-        <div className="bell">
-          <button className="flex items-center cursor-pointer">
-            <FaBell
-              size={20}
-              className="text-violet-600 hover:text-violet-500"
+    <header className="sticky top-0 z-40 bg-white shadow-sm">
+      <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
+        {/* Search bar - hidden on mobile */}
+        <div className="hidden md:flex items-center flex-1 max-w-md">
+          <div className="relative flex items-center w-full">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none cursorp">
+              <BiSearchAlt2 className="h-5 w-5 text-violet-400" />
+            </div>
+            <input
+              type="text"
+              placeholder="Search..."
+              className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm"
             />
-          </button>
+          </div>
         </div>
-        <div className="question">
-          <button className="flex items-center cursor-pointer">
-            <FaRegQuestionCircle
-              size={20}
-              className="text-violet-600 hover:text-violet-500"
-            />
+
+        {/* Right side icons */}
+        <div className="flex items-center space-x-4">
+          <button className="p-1 rounded-full text-gray-500 hover:text-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-500 cursor-pointer">
+            <FaBell className="h-5 w-5" />
           </button>
-        </div>
-        <div className="user flex items-center gap-2">
-          <img
-            src={admin?.avatar ? convertBase64ToImage(admin.avatar) : avatar}
-            alt="avatar"
-            className="w-10 h-10 rounded-full border border-violet-300"
-          />
-          <h1 className="text-violet-600 text-lg font-bold">
-            {admin?.fullName || "Guest"}
-          </h1>
+
+          <button className="p-1 rounded-full text-gray-500 hover:text-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-500 cursor-pointer">
+            <FaRegQuestionCircle className="h-5 w-5" />
+          </button>
+
+          <div className="flex items-center space-x-2">
+            <div className="relative h-8 w-8 rounded-full bg-violet-100 overflow-hidden border border-violet-200">
+              <img
+                src={
+                  admin?.avatar
+                    ? `data:image/jpeg;base64,${admin.avatar}`
+                    : avatar
+                }
+                alt={admin?.fullName || "User avatar"}
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <span className="hidden md:inline text-2sm font-medium text-gray-700">
+              {admin?.fullName || "Guest"}
+            </span>
+          </div>
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 

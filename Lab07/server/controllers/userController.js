@@ -74,3 +74,18 @@ export const addUser = async (req, res) => {
         });
     }
 };
+
+// update user
+export const updateUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) {
+            return res.status(404).json({message: "User not found"});
+        }
+        Object.assign(user, req.body);
+        const updateUser = await user.save();
+        res.json(updateUser);
+    } catch (err) {
+        res.status(400).json({message: err.message});
+    }
+}

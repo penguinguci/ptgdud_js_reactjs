@@ -24,16 +24,18 @@ const Dashboard = () => {
         {name: "New customer", value: 298, growth_rate: 6.84, icon: <FaRegUserCircle/>},
     ]
 
-    useEffect(() => {
-      const fetchDataUsers = async () => {
-        try {
-          const res = await axios.get("http://localhost:5000/api/users");
-          setUsers(res.data);
-          setLoading(false);
-        } catch (err) {
-          console.error(err);
-        }
+    const fetchDataUsers = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/users");
+        setUsers(res.data);
+        setLoading(false);
+      } catch (err) {
+        console.error(err);
       }
+    };
+
+    useEffect(() => {
+      
       fetchDataUsers();
     }, []);
 
@@ -44,55 +46,52 @@ const Dashboard = () => {
           throw new Error("Please fill in all required fields.");
         }
 
-        const userData = {
-          fullName: formData.fullName,
-          phone: formData.phone,
-          email: formData.email,
-          birthDate: formData.birthDate || null,
-          gender: formData.gender === "Male" ? true : false,
-          address: formData.address || "",
-          avatar: formData.avatar || "",
-          role: "user",
-          status: "Active",
-          password: "tranvu23405",
-        };
-
-        const res = await axios.post(
-          "http://localhost:5000/api/users",
-          userData,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            }
-          }
-        );
-
-        if (res.status === 201) {
-          setUsers((prevUsers) => [...prevUsers, res.data])
-          toast.success("User added successfully!");
+        let res;
+        if (selectedUser) {
+          res = await axios.put(
+            `http://localhost:5000/api/users/${selectedUser._id}`, 
+            formData
+          )
+          toast.success("User updated successfully");
+          fetchDataUsers();
           setIsModalOpen(false);
+        } else {
+          const userData = {
+            fullName: formData.fullName,
+            phone: formData.phone,
+            email: formData.email,
+            birthDate: formData.birthDate || null,
+            gender: formData.gender === "Male" ? true : false,
+            address: formData.address || "",
+            avatar: formData.avatar || "",
+            role: "user",
+            status: "Active",
+            password: "tranvu23405",
+          };
+
+          res = await axios.post("http://localhost:5000/api/users", userData, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          if (res.status === 201) {
+            setUsers((prevUsers) => [...prevUsers, res.data]);
+            toast.success("User added successfully!");
+            setIsModalOpen(false);
+          }
         }
       } catch (err) {
         console.error("API error details:", {
-          response: err.response?.data,
+          res: err.res?.data,
           message: err.message,
           config: err.config,
         });
         toast.error(
-          err.response?.data?.message || err.message || "Failed to add user"
+          err.res?.data?.message || err.message || "Failed to add user"
         );
       }
     }
-
-    // const handleAddUser = () => {
-    //   try {
-
-    //   } catch (err) {
-    //     console.error(err);
-    //   }
-    // }
-
-    
 
 
     if (loading) {
@@ -107,7 +106,7 @@ const Dashboard = () => {
     }
 
     return (
-      <div className="p-4">
+      <div className="">
         <h1 className="text-violet-600 font-bold text-3xl">Dashboard</h1>
         <div className="overview mt-6">
           <h1 className="flex items-center gap-2 text-violet-600 font-bold text-2xl">
@@ -145,17 +144,20 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="table-user mt-2">
-            <UserTable users={users} />
+            <UserTable 
+              users={users} 
+              onEdit={(user) => {
+                setSelectedUser(user);
+                setIsModalOpen(true);
+              }}  
+            />
           </div>
         </div>
         <Modal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          title="Enter user information"
+          title= {selectedUser ? "Edit User": "Add New User"}
           width="max-w-3xl"
-          // onClick={() => {
-          //   handleAddUser();
-          // }}
         >
           <UserForm
             userData={selectedUser}
