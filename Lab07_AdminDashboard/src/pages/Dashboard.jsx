@@ -195,7 +195,7 @@ const Dashboard = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title="Edit User"
+        title={selectedUser ? "Edit User" : "Add New User"}
         width="max-w-3xl"
       >
         <UserForm
