@@ -5,7 +5,9 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import { BiSolidDetail, BiImport, BiExport } from "react-icons/bi";
 import UserTable from "../components/UserTable.jsx";
+import axios from "axios";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
@@ -36,7 +38,23 @@ const Dashboard = () => {
     },
   ];
 
+  const fetchDataUsers = async () => {
+    setIsFetching(true);
+    try {
+      const res = await axios.get("http://localhost:5000/api/users");
+      setUsers(res.data);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to fetch users");
+    } finally {
+      setLoading(false);
+      setIsFetching(false);
+    }
+  };
 
+  useEffect(() => {
+    fetchDataUsers();
+  }, []);
 
   if (loading) {
     return (
@@ -53,7 +71,7 @@ const Dashboard = () => {
     <div className="">
       <h1 className="text-[#f44b87] font-bold text-3xl">Dashboard</h1>
       <div className="overview mt-6">
-        <h1 className="flex items-center gap-2 text-[#f44b87]font-bold text-2xl">
+        <h1 className="flex items-center gap-2 text-[#f44b87] font-bold text-2xl">
           <MdDashboard />
           Overview
         </h1>
@@ -101,7 +119,7 @@ const Dashboard = () => {
           {isFetching ? (
             <div className="flex justify-center items-center h-64">
               <div className="loading-spinner"></div>
-              <p className="text-violet-600 font-bold ml-2">Updating data...</p>
+              <p className="text-[#f44b87] font-bold ml-2">Updating data...</p>
             </div>
           ) : (
             <UserTable
