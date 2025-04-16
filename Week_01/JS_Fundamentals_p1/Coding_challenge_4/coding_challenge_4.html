@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .input-group {
+            margin: 20px 0;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            padding: 8px;
+            width: 200px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            display: none;
+        }
+        .preset-buttons {
+            margin-top: 20px;
+        }
+        .preset-buttons button {
+            margin-right: 10px;
+            background-color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Máy Tính Tiền Boa</h1>
+    
+    <div class="input-group">
+        <label>Nhập số tiền hóa đơn ($):</label>
+        <input type="text" id="billAmount">
+    </div>
+
+    <button id="btnCal">Tính Tiền Boa</button>
+
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('btnCal').addEventListener('click', () => {
+            var bill = parseFloat(document.getElementById('billAmount').value)
+            var tip = bill >= 50 && bill <= 300 ? bill * 0.15 : bill * 0.2
+            var total = bill + tip
+
+            var resultDiv = document.getElementById('result')
+            resultDiv.style.display = 'block'
+            resultDiv.innerHTML = `
+                <p>Hóa đơn là $${bill.toFixed(2)}</p>
+                <p>Tiền boa là $${tip.toFixed(2)} (${tip/bill*100}%)</p>
+                <p>Tổng giá trị là $${total.toFixed(2)}</p>
+            `
+        });
+    
+    </script>
+</body>
+</html>

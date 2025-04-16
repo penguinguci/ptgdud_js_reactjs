@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #222;
+            color: white;
+        }
+
+        header {
+            border-bottom: 7px solid white;
+            padding: 20px;
+            position: relative;
+        }
+
+        .btn {
+            border: none;
+            background-color: white;
+            color: #222;
+            padding: 15px 30px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn.again {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .number {
+            background-color: white;
+            color: #222;
+            font-size: 40px;
+            width: 15rem;
+            padding: 20px 0;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        main {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 20px;
+            height: 400px;
+        }
+
+        .left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .message {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .label-score, .label-highscore {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        input {
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <button class="btn again">Làm lại!</button>
+        <h1>Đoán số của tôi!</h1>
+        <div class="number">?</div>
+    </header>
+    <main>
+        <section class="left">
+            <input type="text" class="guess">
+            <button class="btn check">Kiểm tra!</button>    
+        </section>
+        <section class="right">
+            <p class="message">Bắt đầu đoán</p>
+            <p class="label-score">Điểm: <span class="score">20</span></p>
+            <p class="label-highscore">Điểm cao: <span class="highscore">0</span></p>
+        </section>
+    </main>
+
+    <script>
+        var secretNumber = Math.trunc(Math.random() * 20) + 1
+        var score = 20
+        var highscore = 0
+
+        var guessInput = document.querySelector('.guess')
+        var checkBtn = document.querySelector('.check')
+        var againBtn = document.querySelector('.again')
+        var mess1 = document.querySelector('.message')
+        var num1 = document.querySelector('.number')
+        var score1 = document.querySelector('.score')
+        var highscore1 = document.querySelector('.highscore')
+
+        // reset game
+        var resetGame = () => {
+            score = 20
+            secretNumber = Math.trunc(Math.random() * 20) + 1
+
+            // reset gd
+            mess1.textContent = 'Bắt đầu đoán'
+            num1.textContent = '?'
+            score1.textContent = score
+            guessInput.value = ''
+
+            // reset style
+            document.body.style.backgroundColor = '#222'
+            num1.style.width = '15rem'
+        }
+
+        checkBtn.addEventListener('click', () => {
+            var guess = Number(guessInput.value)
+
+            if(!guess) {
+                mess1.textContent = 'Không có số!'
+            } else if (guess === secretNumber) {
+                mess1.textContent = 'Số chính xác!'
+                num1.textContent = secretNumber
+                document.body.style.backgroundColor = '#60b347'
+                num1.style.width = '30rem'
+
+                if (score > highscore) {
+                    highscore = score
+                    highscore1.textContent = highscore
+                }
+            } else if (guess !== secretNumber) {
+                if (score > 1) {
+                    mess1.textContent = guess > secretNumber ? 'Quá cao!' : 'Quá thấp!'
+                    score--
+                    score1.textContent = score
+                } else {
+                    mess1.textContent = 'Bạn đã thua!'
+                    score1.textContent = 0
+                }
+            } 
+        })
+
+        againBtn.addEventListener('click', resetGame)
+
+    </script>
+</body>
+</html>

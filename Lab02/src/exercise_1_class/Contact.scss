@@ -1,0 +1,18 @@
+.contact {
+    border: 1px solid black;
+    width: 400px;
+    padding: 10px;
+    .fname, .lname, .phone, .address {
+        justify-self: start;
+        color: rgb(179, 176, 176);
+    }
+
+    .fname {
+        font-weight: bold;
+        color: rgb(197, 192, 192);
+    }
+
+    .address {
+        margin-right: 35px;
+    }
+}

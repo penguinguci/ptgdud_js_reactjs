@@ -1,0 +1,30 @@
+.contact {
+    border: 1px solid black;
+    width: 400px;
+    padding: 10px;
+    .fname, .lname, .phone, .address {
+        justify-self: start;
+        color: rgb(179, 176, 176);
+    }
+
+    .fname {
+        font-weight: bold;
+        color: rgb(197, 192, 192);
+    }
+
+    .address {
+        text-align: left;
+        margin-right: 35px;
+    }
+
+    .btn_delete {
+        background-color: rgba(197, 23, 23, 0.748);
+        float: right;
+    }
+}
+
+.btn_delete_all {
+    margin-top: 20px;
+    background-color: rgba(197, 23, 23, 0.748);
+    float: right;
+}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          text-align: center;
+          margin: 20px;
+        }
+
+        button {
+          padding: 10px 20px;
+          font-size: 1rem;
+          background-color: #007bff;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+        
+        button:hover {
+          background-color: #0056b3;
+        }
+      </style>
+</head>
+<body>
+    <h1>Ứng dụng thăm dò ý kiến</h1>
+    <p>Nhấp vào nút bên dưới để tham gia cuộc thăm dò!</p>
+    <button id="pollBtn">Câu trả lời thăm dò</button>
+
+    <script>
+        const poll = {
+            question: "What is your favourite programming language?",
+            options: ["0: JavaScript", "1: Python", "2: Rust", "3: C++"],
+            answers: new Array(4).fill(0),
+            registerNewAnswer() {
+                const input = prompt(`${this.question}\n${this.options.join('\n')}\n(Nhập số tùy chọn)`)
+
+                // chuyển đổi thành số và check
+                const answer = Number(input)
+                if(typeof answer === 'number' && answer >= 0 && answer < this.answers.length) {
+                    this.answers[answer]++
+                } else {
+                    alert('Vui lòng nhập một số hợp lệ!')
+                    const input = prompt(`${this.question}\n${this.options.join('\n')}\n(Nhập số tùy chọn)`)
+                }
+                
+                // hiển thị kết quả sau mỗi lần cập nhật
+                this.displayResults('array')
+                this.displayResults('string')
+            },
+
+            displayResults(type = 'array')  {
+                if (type === 'array') {
+                    console.log(this.answers);
+                } else if (type === 'string') {
+                    console.log(`Kết quả thăm dò là ${this.answers.join(', ')}`)
+                }
+            }
+        }
+
+        document.getElementById('pollBtn').addEventListener('click', poll.registerNewAnswer.bind(poll))
+
+
+        const testData1 = [5, 2, 3]
+        const testData2 = [1, 5, 3, 9, 6, 1]
+
+        poll.displayResults.call({answers: testData1}, 'array')
+        poll.displayResults.call({answers: testData1}, 'string')
+        poll.displayResults.call({answers: testData2}, 'array')
+        poll.displayResults.call({answers: testData2}, 'string')
+    </script>
+</body>
+</html>

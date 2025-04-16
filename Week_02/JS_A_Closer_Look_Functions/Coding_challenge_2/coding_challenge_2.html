@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          text-align: center;
+          margin-top: 50px;
+        }
+        h1 {
+          color: red;
+        }
+      </style>
+</head>
+<body>
+    <h1>Nhấp vào bất kỳ đâu để thay đổi màu của bạn >_<</h1>
+    <p>Nhấp vào bất kỳ đâu trên trang để thay đổi màu của tiêu đề thành màu xanh lam!</p>
+    <script>
+        (function () {
+            const header = document.querySelector('h1')
+            header.style.color = 'red'
+
+            document.body.addEventListener('click', () => {
+                header.style.color = 'blue'
+            })
+        })();
+    </script>
+</body>
+</html>

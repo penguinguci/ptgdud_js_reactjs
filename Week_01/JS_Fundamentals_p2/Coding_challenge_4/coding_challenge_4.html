@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .input-group {
+            margin: 20px 0;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            padding: 8px;
+            width: 400px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            display: none;
+        }
+        .preset-buttons {
+            margin-top: 20px;
+        }
+        .preset-buttons button {
+            margin-right: 10px;
+            background-color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Máy Tính Tiền Boa</h1>
+    
+    <div class="input-group">
+        <label>Nhập số tiền hóa đơn ($):</label>
+        <input type="text" id="billAmount" placeholder="[22$, 295$, 176$, 440$, 37$, 105$, 10$, 1100$, 86$, 52$]" disabled>
+    </div>
+
+    <button id="btnCal">Tính Tiền Boa</button>
+
+    <div id="result"></div>
+
+    <script>
+        var calcTip = (bill_value) => {
+            return bill_value >= 50 && bill_value <= 300 ? bill_value * 0.15 : bill_value * 0.2
+        }
+
+        var calcAverage = (totals) => {
+            var sum = 0;
+            for (var i = 0; i < totals.length; i++) {
+                sum += totals[i]
+            }
+            return sum/totals.length;
+        }
+
+        document.getElementById('btnCal').addEventListener('click', () => {
+            var bills = [22, 295, 176, 440, 37, 105, 10, 1100, 86, 52]
+            var tips = []
+            var totals = []
+
+            for (var i = 0; i < bills.length; i++) {
+                var tip = calcTip(bills[i])
+                var total = bills[i] + tip
+
+                tips.push(tip)
+                totals.push(total)
+            }
+
+            var resultDiv = document.getElementById('result')
+            resultDiv.style.display = 'block'
+            resultDiv.innerHTML = `
+                <p>Hóa đơn là: [${totals}]$</p>
+                <p>Tiền boa tương ứng là [${tips}]$</p>
+                <p>Tổng giá trị tương ứng là [${totals}]$</p>
+                <p>Trung bình giá trị tương ứng là [${calcAverage(totals)}]$</p>
+            `
+        });
+    </script>
+</body>
+</html>

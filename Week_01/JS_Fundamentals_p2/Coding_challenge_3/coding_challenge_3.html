@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            padding: 8px;
+            width: 200px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <h1>BMI Caculator</h1>
+    <div class="form-group">
+        <label>Cân nặng của Mark (kg):</label>
+        <input type="text" id="mass_mark">
+    </div>
+    <div class="form-group">
+        <label>Chiều cao của Mark (m):</label>
+        <input type="text" id="height_mark">
+    </div>
+    <div class="form-group">
+        <label>Cân nặng của John (kg):</label>
+        <input type="text" id="mass_john">
+    </div>
+    <div class="form-group">
+        <label>Chiều cao của John (m):</label>
+        <input type="text" id="height_john">
+    </div>
+    <button id="btnCal">Caculator BMI</button>
+    <div id="result"></div>
+    <script>
+        var mark = {
+            fisrtName: 'Mark',
+            lastName: 'Miller',
+            mass: 0,
+            height: 0,
+            calcBMI: function() {
+                this.bmi = this.mass / (this.height**2)
+                return this.bmi
+            }
+        };
+
+        var john = {
+            fisrtName: 'John',
+            lastName: 'Smith',
+            mass: 0,
+            height: 0,
+            calcBMI: function() {
+                this.bmi = this.mass / (this.height**2)
+                return this.bmi
+            }
+        };
+
+        var btnCalculator = document.getElementById("btnCal")
+        var resultDiv = document.getElementById("result")
+        
+        btnCalculator.addEventListener('click', () => {
+            mark.mass = parseFloat(document.getElementById('mass_mark').value)    
+            mark.height = parseFloat(document.getElementById('height_mark').value)    
+            
+            john.mass = parseFloat(document.getElementById('mass_john').value)    
+            john.height = parseFloat(document.getElementById('height_john').value) 
+
+            var mark_bmi = mark.calcBMI()
+            var john_bmi = john.calcBMI()
+
+            var markHigherBMI = mark_bmi > john_bmi
+
+            if (markHigherBMI) {
+                resultDiv.innerHTML = `
+                    <p><strong>Mark's BMI is higher than John's!</strong></p>
+                    <p><strong>Mark's BMI (${mark_bmi.toFixed(2)}) is higher than John's (${john_bmi.toFixed(2)})!</strong></p>
+                `
+            } else {
+                resultDiv.innerHTML = `
+                    <p><strong>John's BMI is higher than Mark's!</strong></p>
+                    <p><strong>John's BMI (${john_bmi.toFixed(2)}) is higher than Mark's (${mark_bmi.toFixed(2)})!</strong></p>
+                `
+            }
+        })
+    </script>
+</body>
+</html>
