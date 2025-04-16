@@ -8,6 +8,8 @@ import UserTable from "../components/UserTable.jsx";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import Modal from "../components/Modal.jsx";
+import UserForm from "../components/UserForm.jsx";
 
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
@@ -66,6 +68,60 @@ const Dashboard = () => {
       </div>
     );
   }
+
+  const handleFormSubmit = async (formData) => {
+    console.log("Form data being submitted:", formData);
+    try {
+      if (!formData.fullName || !formData.email || !formData.phone) {
+        throw new Error("Please fill in all required fields.");
+      }
+
+      let res;
+      if (selectedUser) {
+        res = await axios.put(
+          `http://localhost:5000/api/users/${selectedUser._id}`,
+          formData
+        );
+        toast.success("User updated successfully");
+        await fetchDataUsers(); // Wait for refresh
+        setIsModalOpen(false);
+      } else {
+        const userData = {
+          fullName: formData.fullName,
+          phone: formData.phone,
+          email: formData.email,
+          birthDate: formData.birthDate || null,
+          gender: formData.gender === "Male" ? true : false,
+          address: formData.address || "",
+          avatar: formData.avatar || "",
+          role: "user",
+          status: "Active",
+          password: "tranvu23405",
+        };
+
+        res = await axios.post("http://localhost:5000/api/users", userData, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (res.status === 201) {
+          toast.success("User added successfully!");
+          await fetchDataUsers();
+          setIsModalOpen(false);
+        }
+      }
+    } catch (err) {
+      console.error("API error details:", {
+        response: err.response?.data,
+        message: err.message,
+        config: err.config,
+      });
+      toast.error(
+        err.response?.data?.message || err.message || "Failed to process user"
+      );
+    }
+  };
 
   return (
     <div className="">
@@ -136,6 +192,18 @@ const Dashboard = () => {
           )}
         </div>
       </div>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Edit User"
+        width="max-w-3xl"
+      >
+        <UserForm
+          userData={selectedUser}
+          onSubmit={handleFormSubmit}
+          onCancel={() => setIsModalOpen(false)}
+        />
+      </Modal>
     </div>
   );
 };
